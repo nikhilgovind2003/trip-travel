@@ -9,12 +9,16 @@ import PageNotFound from "./pages/PageNotFound";
 import PrivateRoute from "./utils/PrivateRoute";
 import AdminPage from "./pages/admin/AdminPage";
 function App() {
+
+
+
+
   return (
     <>
       <Routes>
+
         <Route path="/sign-in" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-cd 
         <Route
           path="/"
           element={

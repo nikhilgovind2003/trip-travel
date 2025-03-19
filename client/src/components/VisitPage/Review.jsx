@@ -63,7 +63,7 @@ const Review = ({ placeId }) => {
       <div className="flex justify-between items-center w-full mb-4">
         <h1 className="text-2xl font-bold text-gray-800">Reviews</h1>
         <button
-          className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 transition rounded-full flex items-center gap-2 shadow-lg"
+          className="px-4 py-2 text-white bg-primary hover:bg-secondary transition rounded-full flex items-center gap-2 shadow-lg"
           onClick={() => setAddReview(true)}
         >
           Add Review
@@ -91,7 +91,7 @@ const Review = ({ placeId }) => {
                 </div>
 
                 {/* Star Rating */}
-                <div className="flex gap-1 text-yellow-400">
+                <div className="flex gap-1 text-warning">
                   {[...Array(review.rating)].map((_, i) => (
                     <FaStar key={i} size={16} />
                   ))}

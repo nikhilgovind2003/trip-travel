@@ -57,9 +57,9 @@ const NearestPlace = ({ longitude, latitude }) => {
   const totalPages = Math.ceil(nearestPlaces.length / displayCards);
   const start = currentPage * displayCards;
   const end = start + displayCards;
-
+  
   return (
-    <div className="mt-6 bg-white p-6 rounded-3xl shadow-xl transition-all duration-300 ease-in-out">
+    <div className="mt-6 bg-white py-6 px-4 rounded-3xl shadow-xl transition-all duration-300 ease-in-out">
       {/* Header */}
       <div className="flex justify-between items-center mx-auto px-8 py-4">
         <h1 className="text-3xl font-bold text-gray-800">Nearest Places</h1>

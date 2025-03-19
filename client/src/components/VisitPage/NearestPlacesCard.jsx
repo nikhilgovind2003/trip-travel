@@ -65,7 +65,7 @@ const NearestPlacesCard = ({ data, latitude, longitude }) => {
         <div className="absolute bottom-4 left-0 right-0 px-6 text-white">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">{data.name}</h2>
-            <span className="flex items-center text-lg font-semibold text-yellow-400">
+            <span className="flex items-center text-lg font-semibold text-warning">
               4.6 <FaStar size={18} className="ml-1" />
             </span>
           </div>

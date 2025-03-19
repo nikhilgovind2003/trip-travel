@@ -38,14 +38,6 @@ export const addPlaces = async (req, res) => {
     const long = data.features[0].properties.lon;
     const lat = data.features[0].properties.lat;
 
-    // const { data } = await axios.get(
-    //   `https://api.openweathermap.org/data/2.5/weather?q=${placeName}&appid=${process.env.WEATHER_API}`
-    // );
-
-    // const latitude = data.coord.lat;
-    // const longitude = data.coord.lon;
-
-    // Create a new place document
     const newPlace = new placeModel({
       city: data.features[0].properties.city,
       country: data.features[0].properties.country,
@@ -88,6 +80,35 @@ export const getAllPlaces = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const getPlaces = async (req, res) => {
+  const options = {
+    method: "GET",
+    url: "https://google-map-places.p.rapidapi.com/maps/api/place/details/json",
+    params: {
+      place_id: "ChIJN1t_tDeuEmsRUsoyG83frY4",
+      region: "en",
+      fields: "all",
+      language: "en",
+      reviews_no_translations: "true",
+    },
+    headers: {
+      "x-rapidapi-key": "b332b4753bmsh2e6cab9143663b7p14ed31jsn8bba2a673e9e",
+      "x-rapidapi-host": "google-map-places.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    res.json(response.data.resul);
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "Internal server error",
       error: error.message,
     });
   }
@@ -220,39 +241,10 @@ export const getSinglePlaceById = async (req, res) => {
   }
 };
 
-export const getPlaces = async (req, res) => {
-  const options = {
-    method: "GET",
-    url: "https://google-map-places.p.rapidapi.com/maps/api/place/details/json",
-    params: {
-      place_id: "ChIJN1t_tDeuEmsRUsoyG83frY4",
-      region: "en",
-      fields: "all",
-      language: "en",
-      reviews_no_translations: "true",
-    },
-    headers: {
-      "x-rapidapi-key": "b332b4753bmsh2e6cab9143663b7p14ed31jsn8bba2a673e9e",
-      "x-rapidapi-host": "google-map-places.p.rapidapi.com",
-    },
-  };
-
-  try {
-    const response = await axios.request(options);
-    res.json(response.data.resul);
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
-  }
-};
-
 export const getNearestPlaces = async (req, res) => {
   const { longitude, latitude, tourism, distance } = req.body;
   const googleApiKey = process.env.GOOGLE_API;
-console.log(tourism)
+  console.log(tourism);
   // const query = {}
 
   var config = {
@@ -327,5 +319,52 @@ export const getWeatherForcast = async (req, res) => {
       message: "Internal server error",
       error: error.message,
     });
+  }
+};
+
+export const addLike = async (req, res) => {
+  try {
+    const { userId } = req.body; // User who is liking/unliking
+    const { id: placeId } = req.params;
+    const post = await placeModel.findById(placeId);
+    if (!post) return res.status(404).json({ message: "Place not found" });
+
+    console.log("Before Update Likes:", post.likes);
+
+    const isLiked = post.likes.includes(userId);
+
+    if (isLiked) {
+      post.likes = post.likes.filter((id) => id.toString() !== userId); // Unlike
+    } else {
+      post.likes.push(userId); // Like
+    }
+
+    const updatedPost = await post.save();
+    console.log("After Update Likes:", updatedPost.likes);
+
+    res.json({ likes: updatedPost.likes.length, liked: !isLiked });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const getMostLikedPlaces = async (req, res) => {
+  try {
+    const mostLikePlace = await placeModel.find().sort({ likes: -1 }).limit(1);
+
+    const likeCount = mostLikePlace[0].likes.length
+    console.log(likeCount);
+    res.json({
+      success: true,
+      place: mostLikePlace,
+      likeCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 };

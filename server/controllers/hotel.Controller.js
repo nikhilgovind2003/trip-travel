@@ -1,5 +1,8 @@
 import { hotelModel, placeModel } from "./../models/Models.js";
 import axios from "axios";
+import * as cheerio from "cheerio";
+
+
 export const addHotels = async (req, res) => {
   try {
     const data = req.body;
@@ -19,18 +22,19 @@ export const addHotels = async (req, res) => {
   }
 };
 
-
 export const getNearestHotels = async (req, res) => {
   const googleApiKey = process.env.GOOGLE_API;
   const { longitude, latitude } = req.body;
- const url= `https://api.geoapify.com/v2/places?categories=accommodation.hotel&filter=circle:${longitude},${latitude},1000&apiKey=${googleApiKey}`
+  const url = `https://api.geoapify.com/v2/places?categories=accommodation.hotel&filter=circle:${longitude},${latitude},2000&apiKey=${googleApiKey}`;
   const config = {
     method: "get",
     headers: {},
   };
 
   try {
-    const { data: {features} } = await axios.get(url);
+    const {
+      data: { features },
+    } = await axios.get(url);
 
     if (features) {
       res.status(201).json({
@@ -42,7 +46,7 @@ export const getNearestHotels = async (req, res) => {
     res.json({
       success: false,
       error: error.message,
-      key: `https:api.geoapify.com/v2/places?categories=accommodation.hotel&filter=circle:${longitude},${latitude},1000&apiKey=${googleApiKey}`
+      key: `https:api.geoapify.com/v2/places?categories=accommodation.hotel&filter=circle:${longitude},${latitude},1000&apiKey=${googleApiKey}`,
     });
   }
 };

@@ -8,12 +8,12 @@ const placeSchema = new mongoose.Schema(
     },
     location: {
       type: {
-        type: String, 
-        enum: ['Point'], 
-        required: true
+        type: String,
+        enum: ["Point"],
+        required: true,
       },
       coordinates: {
-        type: [Number], 
+        type: [Number],
         required: true,
       },
     },
@@ -34,18 +34,12 @@ const placeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     country: {
       type: String,
       required: true,
     },
-    
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     features: [],
-    
-
-    weather: {
-      type: {}
-    },
     images: { type: String, required: true },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
   },

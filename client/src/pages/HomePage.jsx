@@ -10,7 +10,7 @@ const HomePage = () => {
       <Navbar />
       <HeroCarousol />
       <HeroSearch />
-      <div className=" p-2 lg:px-12 lg:py-4 bg-gray-200">
+      <div className="p-2 lg:px-12 lg:py-4 bg-blue-50">
 
       <ExploreMore nearestPlacee={false} />
       <Footer />

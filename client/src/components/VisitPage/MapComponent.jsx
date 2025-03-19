@@ -40,12 +40,15 @@ const MapComponent = ({ latitude = 51.505, longitude = -0.09 }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[latitude, longitude]}>
+      <Marker position={[9.9406,76.2653]}>
+        <Popup>Your Location</Popup>
+      </Marker>
+      <Marker position={[9.9406,76.2653]}>
         <Popup>Your Location</Popup>
       </Marker>
       
       {/* Update map view dynamically when latitude or longitude changes */}
-      <MapUpdater latitude={latitude} longitude={longitude} />
+      <MapUpdater latitude={9.9406} longitude={76.2653} />
     </MapContainer>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MdOutlineMenu } from "react-icons/md";
+import { MdOutlineMenu, MdClose } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -7,85 +7,96 @@ const Navbar = () => {
   const [fadeIn, setFadeIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const userToken = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   useEffect(() => {
     setFadeIn(true);
   }, []);
 
   const logout = () => {
-    toast("Log out Successfully");
+    toast.success("Logged out Successfully");
     localStorage.removeItem("token");
     localStorage.removeItem("isAdmin");
-    localStorage.removeItem("isLogged");
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("expiresIn");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userRole");
+
+
     setTimeout(() => {
       navigate("/sign-in");
     }, 1000);
   };
 
+  if (!token) {
+    navigate("/sign-in");
+  }
+
   return (
     <>
       <div
-        className={`fixed backdrop-blur-xl flex z-50 w-full justify-between items-center px-4 lg:px-12 py-4 text-xl text-white ${
-          fadeIn ? "navbar-animation bg-black/50" : ""
-        }`}
+        className={`fixed top-0 w-full z-50 flex items-center justify-between px-6 lg:px-16 py-4 transition-all duration-500 backdrop-blur-lg ${fadeIn ? "bg-white/30 shadow-lg" : "bg-transparent"
+          }`}
       >
-        <Link to="/" className="text-2xl font-bold">
-          LOGO
+        <Link to="/" className="text-3xl font-bold text-black">
+          <span className="text-indigo-600">Trip </span>Travel
         </Link>
 
         {/* Menu Toggle Icon */}
-        <div
-          className="block lg:hidden"
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
-          <MdOutlineMenu size={30} />
+        <div className="block lg:hidden" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <MdClose size={30} /> : <MdOutlineMenu size={30} />}
         </div>
 
         {/* Menu Items */}
-
         <ul
-          className={`lg:flex lg:gap-12 gap-6 justify-between lg:bg-transparent bg-black/70 items-center text-lg mt-4 lg:mt-0 transition-all duration-300
-            ${fadeIn ? "navbar-animation" : ""}
-            ${
-              isOpen
-                ? "flex flex-col absolute z-20 top-12 left-0  w-full p-4"
-                : "hidden"
+          className={`lg:flex lg:gap-10 absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-md lg:shadow-none text-lg text-gray-800 font-medium transition-all duration-300 ${isOpen ? "flex flex-col p-4" : "hidden lg:flex"
             }`}
         >
-          <li className="lg:border-0 relative group">
-            <Link to="/" className="">
+          <li className="group relative">
+            <Link to="/" className="px-4 py-2 block">
               Home
             </Link>
-            <div className="w-full absolute h-1 bg-white bottom-0 left-0 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
-          </li>
-          <li className="lg:border-0 relative group">
-            <Link to="/" className="">
-              About Us
-            </Link>
-            <div className="w-full absolute h-1 bg-white bottom-0 left-0 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
-          </li>
-          <li className="lg:border-0 relative group">
-            <Link to="/" className="">
-              Discover
-            </Link>
-            <div className="w-full absolute h-1 bg-white bottom-0 left-0 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+            <div className="w-full h-[2px] bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
           </li>
 
-          <li>
+          {role === "admin" ? (
+            <li className="group relative">
+              <Link to="/dashBoard" className="px-4 py-2 block">
+                Dashboard
+              </Link>
+              <div className="w-full h-[2px] bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+            </li>
+          ) : (
+            <li className="group relative">
+              <Link to="/about" className="px-4 py-2 block">
+                About Us
+              </Link>
+              <div className="w-full h-[2px] bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+            </li>
+          )}
+
+          <li className="group relative">
+            <Link to="/discover" className="px-4 py-2 block">
+              Discover
+            </Link>
+            <div className="w-full h-[2px] bg-indigo-600 scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+          </li>
+
+          <li className="mt-4 lg:mt-0">
             {userToken ? (
               <button
                 onClick={logout}
-                className="rounded-full px-4 py-1 border-2 cursor-pointer border-white text-lg font-semibold"
+                className="px-6 py-2 rounded-full border-2 border-indigo-600 text-indigo-600 font-semibold hover:bg-indigo-600 hover:text-white transition"
               >
                 Logout
               </button>
             ) : (
               <Link
                 to="/sign-in"
-                className="rounded-full px-8 py-1 border-2 border-white text-lg font-semibold"
+                className="px-6 py-2 rounded-full border-2 border-indigo-600 text-indigo-600 font-semibold hover:bg-indigo-600 hover:text-white transition"
               >
-                Sign-In
+                Sign In
               </Link>
             )}
           </li>
@@ -93,6 +104,9 @@ const Navbar = () => {
       </div>
 
       <ToastContainer position="top-center" />
+
+
+      
     </>
   );
 };

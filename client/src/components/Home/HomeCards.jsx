@@ -3,17 +3,40 @@ import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const HomeCards = ({ item }) => {
-  const [like, setLike] = useState(false);
+  const userId = localStorage.getItem("userId");
+  const [likes, setLikes] = useState(item.likes);
+  const [liked, setLiked] = useState(item.likes.includes(userId));
+
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
   const userToken = localStorage.getItem("token");
   const [isHovered, setIsHovered] = useState(false);
 
   const visitPage = (id) => {
     userToken ? navigate(`/visit/${id}`) : toast.error("Please Login");
   };
+
+
+  const handleLike = async () => {
+    try {
+      const {data} = await axios.put(
+        `http://localhost:4000/api/v1/places/add-like/${item?._id}`,
+        {userId},
+        {
+          headers: { Authorization: `Bearer ${userToken}` }, 
+        }
+      );
+
+      setLikes(data.likes);
+      setLiked(data.liked);
+    } catch (error) {
+      console.error("Error liking post:", error);
+      toast.error("Failed to like post");
+    }
+  };
+  
 
   return (
     <>
@@ -33,10 +56,13 @@ const HomeCards = ({ item }) => {
         <div className=" bg-black/50 z-60 absolute w-full h-full"></div>
         {/* Heart Icon */}
         <div
-          onClick={() => setLike((prev) => !prev)}
+          onClick={() => setLikes((prev) => !prev)}
           className="absolute top-3 right-3 text-white lg:p-2 rounded-full cursor-pointer hover:bg-white/50 transition-all duration-500 ease-out"
         >
-          {like ? <FaHeart size={30} className=" text-red-500" /> : <CiHeart size={30} />}
+
+<div onClick={handleLike} className="">
+          {liked ? <FaHeart size={30} className=" text-red-500" /> : <CiHeart size={30} />}
+    </div>
         </div>
 
         <div className=" p-2 lg:p-4 absolute bottom-0 text-white">
@@ -44,9 +70,9 @@ const HomeCards = ({ item }) => {
             <h2 className=" ext-sm lg:text-xl font-bold shadow-md ">
               {item.placeName}
             </h2>
-            <span className="flex items-center text-xs text-gray-200 lg:text-lg justify-center">
+            <span className="flex items-center text-xs lg:text-lg justify-center">
               4.6
-              <span className=" ml-2 mb-1">
+              <span className=" ml-2 mb-1 text-warning">
                 <FaStar size={20} />
               </span>
             </span>

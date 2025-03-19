@@ -82,7 +82,7 @@ body{
 
 /* Active bullet style */
 .swiper-pagination-bullet-active.custom-bullet {
-  background-color: white;
+  background-color: rgb(153, 179, 204);
   width: 14px;
   height: 14px;
   opacity: 1;

@@ -101,7 +101,7 @@ const AddReviews = ({ setAddReview, placeId }) => {
               value={form.reviewText}
               onChange={onHandleChange}
               name="reviewText"
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Write your review here..."
             ></textarea>
             {error.reviewText && (
@@ -112,13 +112,13 @@ const AddReviews = ({ setAddReview, placeId }) => {
           {/* Star Rating */}
           <div className="flex flex-col mb-4">
             <label className="text-sm text-gray-600 mb-1">Rating</label>
-            <div className="flex gap-2 text-yellow-400 cursor-pointer">
+            <div className="flex gap-2 text-warning cursor-pointer">
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
                   key={star}
                   size={24}
                   className={`transition ${
-                    form.rating >= star ? "text-yellow-400" : "text-gray-300"
+                    form.rating >= star ? "text-warning" : "text-gray-300"
                   }`}
                   onClick={() => handleRating(star)}
                 />
@@ -132,7 +132,7 @@ const AddReviews = ({ setAddReview, placeId }) => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white py-2 rounded-md shadow-md"
+            className="w-full bg-primary hover:bg-secondary transition text-white py-2 rounded-md shadow-md"
           >
             Submit Review
           </button>

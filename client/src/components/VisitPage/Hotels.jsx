@@ -48,7 +48,7 @@ const Hotels = ({longitude, latitude}) => {
 
   return (
     <div className="my-4 bg-white rounded-xl p-4 shadow-lg">
-      <h1 className="text-3xl my-4 font-semibold ml-2">Hotels</h1>
+      <h1 className="text-3xl my-4 font-semibold ml-4">Hotels</h1>
       <div>
         <Swiper
           slidesPerView={4}
@@ -73,7 +73,7 @@ const Hotels = ({longitude, latitude}) => {
           }}
         >
           {hotels.map((hotel, index) => (
-            <SwiperSlide key={index} className="flex justify-center">
+            <SwiperSlide key={index} className="flex p-4 justify-center">
               <HotelCard hotel={hotel} />
             </SwiperSlide>
           ))}

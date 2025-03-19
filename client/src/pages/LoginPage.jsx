@@ -51,9 +51,14 @@ function LoginPage() {
         );
 
         if (res.data.success) {
-          toast("Login Successfully!!!");
+          toast.success("Login Successfully!!!");
+
+          console.log(res.data)
+          localStorage.setItem("token", res.data.token);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
+          localStorage.setItem("userId", res.data.userId);
+          
           const role = res.data.role;
           localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("expiresIn", Date.now() + 72000);
@@ -65,11 +70,11 @@ function LoginPage() {
             }
           }, 1000);
         } else {
-          toast(res.data);
+          toast.info(res.data);
         }
       } catch (error) {
-        console.log(error);
-        toast(error.message);
+        console.log(error)
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -87,7 +92,7 @@ function LoginPage() {
       <div className="absolute w-full h-screen z-30 backdrop-blur-sm"></div>
 
       <div className="w-full max-w-sm sm:max-w-md z-50 bg-white p-6 sm:p-8 rounded-lg shadow-lg">
-        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-center text-primary mb-6">
           Sign In
         </h2>
         <form onSubmit={handleSubmit}>

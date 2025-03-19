@@ -1,12 +1,10 @@
-
-import {userModel} from "../models/Models.js";
+import { userModel } from "../models/Models.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import  otpGenerator from "otp-generator";
+import otpGenerator from "otp-generator";
 
 const otpStore = [];
-
 
 export const login = async (req, res) => {
   try {
@@ -36,13 +34,12 @@ export const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-
-    
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",
       token,
-      role: user.role
+      role: user.role,
+      userId: user._id,
     });
   } catch (error) {
     console.error(error);
@@ -72,7 +69,7 @@ export const register = async (req, res) => {
       email,
       phoneNumber,
       password: hashedPassword,
-      role
+      role,
     });
     await newUser.save();
 
@@ -295,3 +292,20 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
+export const getUsers = async (req, res) => {
+  try {
+    const allUsers = await userModel.find({ role: "user" }).countDocuments();
+    const users = await userModel.find();
+
+    res.status(200).json({
+      success: true,
+      allUsers,
+      users,
+    });
+  } catch (error) {
+    res.json({
+      error: error.message,
+      message: "Internal server error",
+    });
+  }
+};

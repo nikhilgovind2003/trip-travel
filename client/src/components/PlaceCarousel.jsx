@@ -56,8 +56,8 @@ const Carousel = ({ img }) => {
           </SwiperSlide>
         ))}
 
-        <div className=" absolute top-0 right-0 w-[500px] h-full md:bg-gradient-to-r from-transparent to-gray-200 z-10"></div>
-        <div className=" absolute top-0 left-0 w-[500px] h-full md:bg-gradient-to-r from-gray-200 to-transparent z-10"></div>
+        <div className=" absolute top-0 right-0 w-[500px] h-full md:bg-gradient-to-r from-transparent to-blue-50 z-10"></div>
+        <div className=" absolute top-0 left-0 w-[500px] h-full md:bg-gradient-to-r from-blue-50 to-transparent z-10"></div>
 
         <div className="swiper-container absolute top-1/2 trannsform -translate-y-1/2 left-0 z-30 flex justify-between w-full">
           <button className="swiper-left-arrow text-white">

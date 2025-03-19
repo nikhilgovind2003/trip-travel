@@ -9,6 +9,8 @@ import {
   getNearestPlaces,
   getWeather,
   getWeatherForcast,
+  addLike,
+  getMostLikedPlaces,
 } from "./../controllers/place.Controller.js";
 import placeUpload from "./../utils/palce.Storage.js";
 import { jwtToken } from './../middlewares/verifyToken.js';
@@ -22,6 +24,8 @@ router.patch("/update-place/:id", jwtToken, placeUpload.single("file"), updatePl
 router.get("/get-place-by-id/:id", jwtToken, getSinglePlaceById);
 router.get("/add-places", jwtToken, placeUpload.single("file"), addPlaces);
 router.post("/get-nearest-places",jwtToken, getNearestPlaces)
+router.put("/add-like/:id",jwtToken, addLike)
+router.get("/most-liked-place",getMostLikedPlaces)
 
 router.post("/get-weather", jwtToken, getWeather)
 router.post("/get-weather-forcast", jwtToken, getWeatherForcast)

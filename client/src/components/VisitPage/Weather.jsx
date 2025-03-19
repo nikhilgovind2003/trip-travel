@@ -34,11 +34,11 @@ const Weather = ({ placeName }) => {
 
     switch (hour?.weather[0]?.main) {
       case "Clear":
-        return <Sun className="text-yellow-500 w-8 h-8" />;
+        return <Sun className="text-warning w-8 h-8" />;
       case "Clouds":
-        return <CloudSun className="text-yellow-500 w-8 h-8" />;
+        return <CloudSun className="text-warning w-8 h-8" />;
       default:
-        return <Sun className="text-yellow-500 w-8 h-8" />;
+        return <Sun className="text-warning w-8 h-8" />;
     }
   };
 

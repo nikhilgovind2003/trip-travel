@@ -4,6 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import bgImg from "../assets/SignUpBg.png";
 import { Eye, EyeClosed } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+
+
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
     userName: "",
@@ -73,17 +76,15 @@ const SignUpPage = () => {
         );
 
         if (res.data.success) {
-          alert("Register Successfully");
-          toast("Register Successfully!!!");
+          toast.success("Register Successfully!!!");
           setTimeout(() => {
             navigate("/sign-in");
           }, 1000);
         } else {
-          toast(res.data);
+          toast.error(res.data);
         }
       } catch (error) {
-        console.log(error.message);
-        toast(error.message);
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -102,7 +103,7 @@ const SignUpPage = () => {
       <div className="absolute w-full h-screen z-30 backdrop-blur-sm"></div>
 
         <div className="w-full max-w-sm sm:max-w-md z-50 bg-white p-6 sm:p-8 rounded-lg shadow-lg">
-          <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
+          <h2 className="text-xl sm:text-2xl text-primary font-bold text-center mb-6">
             Register
           </h2>
           <form onSubmit={handleSubmit}>
@@ -259,10 +260,8 @@ const SignUpPage = () => {
             <hr className=" w-full" />
           </div>
 
-          <div className="flex my-4 border-2 justify-center border-green-500 rounded-full px-4 py-2 items-center gap-4">
-            <div className=" w-6 h-6">
-              <img className=" w-full h-full" src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="" />
-            </div>
+          <div className="flex my-4 border-2 justify-center cursor-pointer border-primary rounded-full px-4 py-2 items-center gap-4">
+            <FcGoogle size={30} />
             Sign With Google
           </div>
 
