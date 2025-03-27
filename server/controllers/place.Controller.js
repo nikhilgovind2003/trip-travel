@@ -71,7 +71,9 @@ export const addPlaces = async (req, res) => {
 
 export const getAllPlaces = async (req, res) => {
   try {
-    const places = await placeModel.find();
+    const places = await placeModel.find()
+
+    console.log(places);
     if (!places) return res.status(404).json({ message: "Places not found" });
     return res.status(200).json({
       success: true,
@@ -357,12 +359,12 @@ export const getMostLikedPlaces = async (req, res) => {
   try {
     const mostLikePlace = await placeModel.find().sort({ likes: -1 }).limit(1);
 
-    const likeCount = mostLikePlace[0].likes.length
+    const likeCount = mostLikePlace[0].likes.length;
     console.log(likeCount);
     res.json({
       success: true,
       place: mostLikePlace,
-      likeCount
+      likeCount,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

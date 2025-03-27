@@ -7,19 +7,26 @@ import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 
 const HeroCarousol = () => {
-
   // usestates
   const [fadeIn, setFadeIn] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
   const images = [img3, img1, img4];
 
-  // useeffectts
+  // Scroll event listener for parallax
   useEffect(() => {
     setFadeIn(true);
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
-
-  // others
+  // settings
   const settings = {
     infinite: true,
     speed: 100,
@@ -29,16 +36,18 @@ const HeroCarousol = () => {
     arrows: false,
   };
 
-
   return (
     <div className={`h-[75vh] w-full ${fadeIn ? "navabar-animation" : ""}`}>
       <Slider {...settings}>
         {images.map((image, index) => (
-          <div className=" w-full" key={index}>
+          <div className="bg-fixed w-full relative overflow-hidden" key={index}>
             <div className="w-screen h-screen absolute bg-[#55525529]"></div>
+            
+            {/* Parallax effect applied here */}
             <img
               src={image}
-              className="w-full h-[75vh] object-cover"
+              className="w-full h-[75vh] object-cover transition-transform duration-500 ease-out"
+              style={{ transform: `translateY(${scrollY * 0.3}px)` }}  
               alt={`Slide ${index + 1}`}
             />
           </div>

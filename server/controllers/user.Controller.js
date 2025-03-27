@@ -8,7 +8,7 @@ const otpStore = [];
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, isActive } = req.body;
 
     // Find user and exclude the password field
     const user = await userModel.findOne({ email });

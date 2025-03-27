@@ -5,6 +5,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Pagination from "../Pagination";
 
 const CardSlider = ({ rows, nearestPlace }) => {
+
   // usestate
   const [destination, setDestination] = useState([]);
   const token = localStorage.getItem("token");
@@ -14,12 +15,14 @@ const CardSlider = ({ rows, nearestPlace }) => {
     fetchDestinations();
   }, []);
 
+
   // Functions
   const fetchDestinations = async () => {
     try {
+      let limit = 5;
       const url = nearestPlace
         ? "http://localhost:4000/api/v1/places/get"
-        : "http://localhost:4000/api/v1/places/get-all-places";
+        : `http://localhost:4000/api/v1/places/get-all-places?page=${10}&limit=${limit}`;
       const { data } = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,

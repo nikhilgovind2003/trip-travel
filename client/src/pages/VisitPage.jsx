@@ -9,6 +9,9 @@ import Weather from "../components/VisitPage/Weather";
 import MapComponent from "../components/VisitPage/MapComponent";
 import Review from "../components/VisitPage/Review";
 import Navbar from "./../components/Navbar";
+
+
+
 const VisitPage = () => {
   const { id } = useParams();
 

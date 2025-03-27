@@ -1,5 +1,5 @@
 import express from 'express';
-import placeUpload from '../utils/palce.Storage.js';
+import {placeUpload} from '../utils/index.js';
 import { addHotels, getNearestHotels } from '../controllers/hotel.Controller.js';
 const router = express.Router();
 

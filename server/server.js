@@ -4,11 +4,14 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import session from "express-session";
-import { placeRoutes, userRoutes, hotelRoutes, reviewRoutes } from "./routes/routes.js";
+import {
+  placeRoutes,
+  userRoutes,
+  hotelRoutes,
+  reviewRoutes,
+} from "./routes/index.js";
 import { fileURLToPath } from "url";
-import { jwtToken } from './middlewares/verifyToken.js';
-import passport from "./middlewares/passport.Middleware.js";
-import { isAdmin } from "./middlewares/roleMiddleware.js";
+import { passport, isAdmin, jwtToken } from "./middlewares/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -31,20 +34,17 @@ app.use(
       secure: false,
     },
   })
-  
 );
 
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
 const HOST = "0.0.0.0"; // Bind to all network interfaces
 
-
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/places", placeRoutes);
-app.use("/api/v1/hotels",jwtToken, hotelRoutes);
-app.use("/api/v1/reviews", jwtToken,reviewRoutes);
+app.use("/api/v1/hotels", jwtToken, hotelRoutes);
+app.use("/api/v1/reviews", jwtToken, reviewRoutes);
 
-
-app.listen(port, HOST,() => console.log(`App listening on port ${port}!`));
+app.listen(port, HOST, () => console.log(`App listening on port ${port}!`));

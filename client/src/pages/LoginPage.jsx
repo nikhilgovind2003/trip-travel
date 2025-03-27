@@ -6,7 +6,7 @@ import bgImg from "../assets/SignUpBg.png";
 import { Link } from "react-router-dom";
 import { Eye, EyeClosed } from "lucide-react";
 
-function LoginPage() {
+const LoginPage = () => {
   // usestate
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -58,7 +58,7 @@ function LoginPage() {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
           localStorage.setItem("userId", res.data.userId);
-          
+
           const role = res.data.role;
           localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("expiresIn", Date.now() + 72000);
@@ -110,9 +110,8 @@ function LoginPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border-2 ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+              className={`w-full px-4 py-2 border-2 ${errors.email ? "border-red-500" : "border-gray-300"
+                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -134,9 +133,8 @@ function LoginPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border-2 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                className={`w-full px-4 py-2 border-2 ${errors.password ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
               />
               <span
                 className="absolute right-3 top-3 cursor-pointer text-gray-500"

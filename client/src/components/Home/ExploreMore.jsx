@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CardSlider from "./CardSlider";
 
 const ExploreMore = ({nearestPlace}) => {

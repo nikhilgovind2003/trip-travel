@@ -12,32 +12,35 @@ import {
   addLike,
   getMostLikedPlaces,
 } from "./../controllers/place.Controller.js";
-import placeUpload from "./../utils/palce.Storage.js";
-import { jwtToken } from './../middlewares/verifyToken.js';
+import { placeUpload } from "../utils/index.js";
+import { jwtToken } from "./../middlewares/index.js";
 const router = express.Router();
 
 router.post("/add-places", jwtToken, addPlaces);
 router.get("/get-all-places", getAllPlaces);
 router.get("/get-places", jwtToken, getPlaces);
 router.delete("/remove-places/:id", jwtToken, deletePlaces);
-router.patch("/update-place/:id", jwtToken, placeUpload.single("file"), updatePlaces);
+router.patch(
+  "/update-place/:id",
+  jwtToken,
+  placeUpload.single("file"),
+  updatePlaces
+);
 router.get("/get-place-by-id/:id", jwtToken, getSinglePlaceById);
 router.get("/add-places", jwtToken, placeUpload.single("file"), addPlaces);
-router.post("/get-nearest-places",jwtToken, getNearestPlaces)
-router.put("/add-like/:id",jwtToken, addLike)
-router.get("/most-liked-place",getMostLikedPlaces)
+router.post("/get-nearest-places", jwtToken, getNearestPlaces);
+router.put("/add-like/:id", jwtToken, addLike);
+router.get("/most-liked-place", getMostLikedPlaces);
 
-router.post("/get-weather", jwtToken, getWeather)
-router.post("/get-weather-forcast", jwtToken, getWeatherForcast)
-
-
+router.post("/get-weather", jwtToken, getWeather);
+router.post("/get-weather-forcast", jwtToken, getWeatherForcast);
 
 router.post("/sample", async (req, res) => {
   // try {
   //   const { longitude, latitude } = req.body;
   //   const googleApiKey = process.env.GOOGLE_API;
   //   const existingData = await nearestPlaceModel.find({ longitude, latitude });
-    
+
   //   if (existingData.length > 0) {
   //     res.status(200).json({
   //       success: true,
@@ -92,23 +95,23 @@ router.post("/sample", async (req, res) => {
   //     }
   //   }
 
-
   // } catch (error) {
   //   res.json(error);
-    // }
-    
-  
-  const apikey = process.env.GOOGLE_API
-  console.log(apikey)
-  
-    var requestOptions = {
-      method: 'GET',
-    };
-    
-    fetch(`https://api.geoapify.com/v2/place-details?id=id%3D514d368a517c511e40594bfd7b574ec84740f00103f90135335d1c00000000920313416e61746f6d697363686573204d757365756d&apiKey=${apikey}`, requestOptions)
-      .then(response => response.json())
-      .then(result => res.json(result))
-      .catch(error => console.log('error', error));
+  // }
 
+  const apikey = process.env.GOOGLE_API;
+  console.log(apikey);
+
+  var requestOptions = {
+    method: "GET",
+  };
+
+  fetch(
+    `https://api.geoapify.com/v2/place-details?id=id%3D514d368a517c511e40594bfd7b574ec84740f00103f90135335d1c00000000920313416e61746f6d697363686573204d757365756d&apiKey=${apikey}`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((result) => res.json(result))
+    .catch((error) => console.log("error", error));
 });
 export default router;

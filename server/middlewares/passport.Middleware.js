@@ -3,7 +3,7 @@ import passport from 'passport';
 import OAuth2Strategy from 'passport-google-oauth2';  
 import {userModel} from '../models/Models.js'; // Adjust path as needed  
 import dotenv from 'dotenv';  
-import { generateToken } from '../utils/generateToken.js';
+import { generateToken } from '../utils/index.js';
 
 dotenv.config({  
     path: './.env'   

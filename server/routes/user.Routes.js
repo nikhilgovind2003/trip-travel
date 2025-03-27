@@ -8,7 +8,7 @@ import {
   getUsers,
 } from "../controllers/user.Controller.js";
 
-import passport from "../middlewares/passport.Middleware.js";
+import {passport} from "../middlewares/index.js";
 
 
 const router = express.Router();

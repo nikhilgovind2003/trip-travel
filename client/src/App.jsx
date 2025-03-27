@@ -1,13 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import HomePage from "./pages/HomePage";
+import React from 'react'
+
+const LazyHomePage = React.lazy(() => import("./pages/HomePage"))
+const LazyVisit = React.lazy(() => import("./pages/VisitPage"))
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import VisitPage from "./pages/VisitPage";
 import BookingPage from "./pages/BookingPage";
 import PageNotFound from "./pages/PageNotFound";
 import PrivateRoute from "./utils/PrivateRoute";
 import AdminPage from "./pages/admin/AdminPage";
+import { Suspense } from "react";
+
+
+
 function App() {
 
 
@@ -23,7 +29,10 @@ function App() {
           path="/"
           element={
             <PrivateRoute allowedRoles={["user", "admin"]}>
-              <HomePage />
+              <Suspense fallback={<h1>Loading...</h1>}
+              >
+                <LazyHomePage />
+              </Suspense>
             </PrivateRoute>
           }
         />
@@ -50,7 +59,10 @@ function App() {
           path="/visit/:id"
           element={
             <PrivateRoute allowedRoles={["user", "admin"]}>
-              <VisitPage />
+              <Suspense fallback={<h1>Loading...</h1>}
+              >
+                <LazyVisit />
+              </Suspense>
             </PrivateRoute>
           }
         />
