@@ -1,11 +1,10 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
@@ -13,61 +12,63 @@ const Carousel = ({ img }) => {
   const slider = [img, img, img, img, img]; // Example images
 
   return (
-  <div className="flex justify-center mx-auto items-center mb-12">
-      <Swiper
-        effect={"coverflow"}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        loop={true}
-        spaceBetween={140}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 100,
-          modifier: 2.5,
-          slideShadows: false,
-        }}
-        navigation={{
-          prevEl: ".swiper-left-arrow",
-          nextEl: ".swiper-right-arrow",
-          clickable: true,
-        }}
-        pagination={{ el: "", clickable: true }}
-        modules={[EffectCoverflow, Navigation, Pagination]}
-        className="w-full mx-auto  lg:relative"
-      >
-        {slider.map((slide, index) => (
-          <SwiperSlide
-            key={index}
-            className="flex justify-center pt-12 lg:w-[500px] lg:h-[400px] w-[200px] -[400px]"
-            style={{
-              width: "500px",
-            }}
-          >
-            <div className=" relative h-[350px]">
-              <img
-                src={`http://localhost:4000/${slide}`}
-                alt={`Slide ${index}`}
-                className="w-full h-full object-cover rounded-[25px] shadow-lg"
-              />
-              <div className=" absolute top-0 left-0 w-full h-full bg-black/50 rounded-[25px] z-50"></div>
-            </div> 
-          </SwiperSlide>
-        ))}
+    <div className="w-full flex justify-center items-center bg-gray-100 my-10">
+      
+      <div className="relative w-full">
+        
+        {/* Swiper Component */}
+        <Swiper
+          effect={"slide"}               // Slide effect
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={1}              // One slide at a time
+          loop={true}
+          spaceBetween={30}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          navigation={{
+            prevEl: ".swiper-left-arrow",
+            nextEl: ".swiper-right-arrow",
+            clickable: true,
+          }}
+          pagination={{ clickable: true }}
+          modules={[Navigation, Pagination, Autoplay]}
+        >
+          {slider.map((slide, index) => (
+            <SwiperSlide
+              key={index}
+              className="flex justify-center items-center w-full"
+            >
+              <div className="relative group w-full h-[400px] md:h-[550px] lg:h-[500px]">
+                {/* Image with Full Width */}
+                <img
+                  src={`http://localhost:4000/${slide}`}
+                  alt={`Slide ${index}`}
+                  className="w-full h-full object-cover rounded-3xl shadow-lg transition-transform duration-500 group-hover:scale-102"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-3xl transition-opacity duration-500 group-hover:opacity-70"></div>
 
-        <div className=" absolute top-0 right-0 w-[500px] h-full md:bg-gradient-to-r from-transparent to-blue-50 z-10"></div>
-        <div className=" absolute top-0 left-0 w-[500px] h-full md:bg-gradient-to-r from-blue-50 to-transparent z-10"></div>
+                {/* Content */}
+                <div className="absolute bottom-8 left-8 text-white z-10 transition-opacity duration-300 group-hover:opacity-100">
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-        <div className="swiper-container absolute top-1/2 trannsform -translate-y-1/2 left-0 z-30 flex justify-between w-full">
-          <button className="swiper-left-arrow text-white">
-            <FaChevronLeft size={40} />
-          </button>
-          <button className="swiper-right-arrow text-white">
-            <FaChevronRight size={40} />
+        {/* Navigation Arrows */}
+        <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20">
+          <button className="swiper-left-arrow bg-white text-gray-800 hover:bg-gray-800 hover:text-white rounded-full p-4 transition-transform duration-300 hover:scale-110 shadow-md">
+            <FaChevronLeft size={24} />
           </button>
         </div>
-      </Swiper>
+
+        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20">
+          <button className="swiper-right-arrow bg-white text-gray-800 hover:bg-gray-800 hover:text-white rounded-full p-4 transition-transform duration-300 hover:scale-110 shadow-md">
+            <FaChevronRight size={24} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

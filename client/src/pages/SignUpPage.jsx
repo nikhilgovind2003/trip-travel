@@ -1,11 +1,10 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import bgImg from "../assets/SignUpBg.png";
 import { Eye, EyeClosed } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
-
+import GoogleAuth from "../components/GoogleAuth";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -18,18 +17,6 @@ const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-
-
-  const ref = useRef()
-
-
-  // consst handleSignUp = () => {
-  //   try {
-  //     await axios,
-  //   } catch (error) {
-      
-  //   }
-  // }
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -100,7 +87,7 @@ const SignUpPage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-      <div className="absolute w-full h-screen z-30 backdrop-blur-sm"></div>
+        <div className="absolute w-full h-screen z-30 backdrop-blur-sm"></div>
 
         <div className="w-full max-w-sm sm:max-w-md z-50 bg-white p-6 sm:p-8 rounded-lg shadow-lg">
           <h2 className="text-xl sm:text-2xl text-primary font-bold text-center mb-6">
@@ -121,9 +108,8 @@ const SignUpPage = () => {
                 name="userName"
                 value={formData.userName}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.userName ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                className={`w-full px-4 py-2 border ${errors.userName ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
               />
               {errors.userName && (
                 <p className="text-red-500 text-sm mt-1">{errors.userName}</p>
@@ -144,9 +130,8 @@ const SignUpPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                className={`w-full px-4 py-2 border ${errors.email ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -167,9 +152,8 @@ const SignUpPage = () => {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-2 border ${
-                  errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                className={`w-full px-4 py-2 border ${errors.phoneNumber ? "border-red-500" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
               />
               {errors.phoneNumber && (
                 <p className="text-red-500 text-sm mt-1">
@@ -187,23 +171,22 @@ const SignUpPage = () => {
                 Password
               </label>
               <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-2 border-2 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
-              />
-              <span
-                className="absolute right-3 top-3 cursor-pointer text-gray-500"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                {showPassword ? <Eye /> : <EyeClosed />}
-              </span>
-            </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 border-2 ${errors.password ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                />
+                <span
+                  className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? <Eye /> : <EyeClosed />}
+                </span>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
@@ -218,23 +201,22 @@ const SignUpPage = () => {
                 Confirm Password
               </label>
               <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-2 border-2 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
-              />
-              <span
-                className="absolute right-3 top-3 cursor-pointer text-gray-500"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-              >
-                {showConfirmPassword ? <Eye /> : <EyeClosed />}
-              </span>
-            </div>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 border-2 ${errors.password ? "border-red-500" : "border-gray-300"
+                    } rounded-md focus:outline-none focus:ring focus:ring-indigo-200`}
+                />
+                <span
+                  className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                >
+                  {showConfirmPassword ? <Eye /> : <EyeClosed />}
+                </span>
+              </div>
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.confirmPassword}
@@ -246,24 +228,13 @@ const SignUpPage = () => {
             <button
               type="submit"
               className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary focus:outline-none focus:ring focus:ring-indigo-300"
-            > 
+            >
               Register
             </button>
           </form>
 
 
-      
-          
-          <div className=" flex w-full items-center gap-4 text-center my-4">
-            <hr className=" w-full" />
-            OR
-            <hr className=" w-full" />
-          </div>
-
-          <div className="flex my-4 border-2 justify-center cursor-pointer border-primary rounded-full px-4 py-2 items-center gap-4">
-            <FcGoogle size={30} />
-            Sign With Google
-          </div>
+          <GoogleAuth />
 
           <div className="mt-4 text-center ">
             Have an account?  <Link className=" text-primary underline " to='/sign-in'>Login</Link>
@@ -271,7 +242,7 @@ const SignUpPage = () => {
 
         </div>
         <ToastContainer
-        position="top-center"/>
+          position="top-center" />
       </div>
     </>
   );

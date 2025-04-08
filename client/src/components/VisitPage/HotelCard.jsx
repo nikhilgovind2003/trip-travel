@@ -64,15 +64,15 @@ const HotelCard = ({ hotel }) => {
         {/* Navigation Buttons (Now Fixed) */}
         <button
           ref={prevRef}
-          className="absolute top-1/2 left-1 z-20 transform -translate-y-1/2 p-2 bg-white/70 backdrop-blur-md rounded-full shadow-lg transition hover:scale-110"
+          className="absolute hover:bg-gray-800 group hover:text-white top-1/2 left-1 z-20 transform -translate-y-1/2 p-2 bg-white/70 backdrop-blur-md rounded-full shadow-lg transition hover:scale-110"
         >
-          <FaAngleLeft size={20} className="text-gray-700" />
+          <FaAngleLeft size={20} className="text-gray-800 group-hover:text-white" />
         </button>
         <button
           ref={nextRef}
-          className="absolute top-1/2 right-1 z-20 transform -translate-y-1/2 p-2 bg-white/70 backdrop-blur-md rounded-full shadow-lg transition hover:scale-110"
+          className="absolute top-1/2 right-1 z-20 transform -translate-y-1/2 p-2 hover:bg-gray-800 group hover:text-white  bg-white/70 backdrop-blur-md rounded-full shadow-lg transition hover:scale-110"
         >
-          <FaAngleRight size={20} className="text-gray-700" />
+          <FaAngleRight size={20} className="text-gray-800 group-hover:text-white" />
         </button>
 
         {/* Book Now Button */}

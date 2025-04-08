@@ -68,24 +68,112 @@ export const addPlaces = async (req, res) => {
     });
   }
 };
-
 export const getAllPlaces = async (req, res) => {
   try {
-    const places = await placeModel.find()
+    // Extract and validate pagination parameters
+    const page = Math.max(1, parseInt(req.query.page) || 1); // Ensure page is at least 1
+    const limit = Math.max(1, parseInt(req.query.limit) || 10); // Ensure limit is at least 1
+    const skip = (page - 1) * limit;
 
-    console.log(places);
-    if (!places) return res.status(404).json({ message: "Places not found" });
-    return res.status(200).json({
+    // Fetch total count and places concurrently
+    const [totalPlaces, places] = await Promise.all([
+      placeModel.countDocuments(),
+      placeModel
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .lean() // Return plain JS objects
+        .select("-__v -createdAt -updatedAt"), // Exclude unnecessary fields
+    ]);
+
+    if (!places.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No places found for this page.",
+      });
+    }
+    const totalPages = Math.ceil(totalPlaces / limit);
+    res.status(200).json({
       success: true,
+      message: "Places fetched successfully",
       places,
+      currentPage: page,
+      totalPages,
+      totalPlaces,
     });
   } catch (error) {
+    console.error("Error fetching places:", error);
     res.status(500).json({
+      success: false,
       message: "Internal Server Error",
       error: error.message,
     });
   }
 };
+
+
+export const getNearestPlaces = async (req, res) => {
+  try {
+
+    // Extract query parameters with defaults
+    const limit = Math.max(1, parseInt(req.query.limit) || 10);  // Default limit to 10
+    const page = Math.max(1, parseInt(req.query.page) || 1);     // Default page to 1
+    const skip = (page - 1) * limit;
+
+    const { longitude, latitude, tourism, distance } = req.body;
+    const googleApiKey = process.env.GOOGLE_API;
+
+    // Validate required fields
+    if (!longitude || !latitude || isNaN(longitude) || isNaN(latitude)) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid Longitude and Latitude are required",
+      });
+    }
+
+    // Set default distance if not provided
+    const maxDistance = parseInt(distance) || 5000;  // Default distance: 5000 meters
+
+    // Geoapify API configuration
+    const geoapifyUrl = `https://api.geoapify.com/v2/places?categories=tourism&filter=circle:${longitude},${latitude},${maxDistance}&limit=200&apiKey=${googleApiKey}`;
+
+    const { data } = await axios.get(geoapifyUrl);
+
+
+    // Filter by tourism category if specified
+    let places = data.features;
+    
+    if (tourism) {
+      places = places.filter(
+        (place) => place.properties.datasource.raw.tourism === tourism
+      );
+    }
+
+    // Apply server-side pagination
+    const totalPlaces = places.length;
+    const totalPages = Math.ceil(totalPlaces / limit);
+    const paginatedPlaces = places.slice(skip, skip + limit);
+
+    // Return paginated response
+    res.status(200).json({
+      success: true,
+      message: "Nearest places fetched successfully",
+      place: paginatedPlaces,
+      currentPage: page,
+      totalPages,
+      totalPlaces,
+    });
+
+  } catch (error) {
+    console.error("Error fetching nearest places:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 
 export const getPlaces = async (req, res) => {
   const options = {
@@ -243,41 +331,6 @@ export const getSinglePlaceById = async (req, res) => {
   }
 };
 
-export const getNearestPlaces = async (req, res) => {
-  const { longitude, latitude, tourism, distance } = req.body;
-  const googleApiKey = process.env.GOOGLE_API;
-  console.log(tourism);
-  // const query = {}
-
-  var config = {
-    method: "get",
-    url: `https://api.geoapify.com/v2/places?categories=tourism&filter=circle:${longitude},${latitude},${distance}&limit=200&apiKey=${googleApiKey}`,
-    headers: {},
-  };
-  try {
-    if (!longitude || !latitude) {
-      return res.status(404).json({
-        success: false,
-        message: "Longitude and Latitude are required",
-      });
-    }
-    const { data } = await axios(config);
-    let places = data.features;
-    if (tourism) {
-      places = places.filter(
-        (place) => place.properties.datasource.raw.tourism === tourism
-      );
-    }
-    res.status(200).json(places);
-  } catch (error) {
-    res.status(404).json({
-      success: false,
-      message: "Internal server error",
-      error: error,
-    });
-  }
-};
-
 export const getWeather = async (req, res) => {
   try {
     const { placeName } = req.body;
@@ -331,7 +384,6 @@ export const addLike = async (req, res) => {
     const post = await placeModel.findById(placeId);
     if (!post) return res.status(404).json({ message: "Place not found" });
 
-    console.log("Before Update Likes:", post.likes);
 
     const isLiked = post.likes.includes(userId);
 
@@ -340,10 +392,7 @@ export const addLike = async (req, res) => {
     } else {
       post.likes.push(userId); // Like
     }
-
     const updatedPost = await post.save();
-    console.log("After Update Likes:", updatedPost.likes);
-
     res.json({ likes: updatedPost.likes.length, liked: !isLiked });
   } catch (error) {
     console.error("Error:", error);
@@ -360,7 +409,6 @@ export const getMostLikedPlaces = async (req, res) => {
     const mostLikePlace = await placeModel.find().sort({ likes: -1 }).limit(1);
 
     const likeCount = mostLikePlace[0].likes.length;
-    console.log(likeCount);
     res.json({
       success: true,
       place: mostLikePlace,

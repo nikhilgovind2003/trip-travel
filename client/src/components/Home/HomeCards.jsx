@@ -17,8 +17,7 @@ const HomeCards = ({ item }) => {
   const visitPage = (id) => {
     userToken ? navigate(`/visit/${id}`) : toast.error("Please Login");
   };
-
-
+  
   const handleLike = async () => {
     try {
       const {data} = await axios.put(

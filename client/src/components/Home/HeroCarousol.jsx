@@ -37,7 +37,7 @@ const HeroCarousol = () => {
   };
 
   return (
-    <div className={`h-[75vh] w-full ${fadeIn ? "navabar-animation" : ""}`}>
+    <div className={"h-[50vh] mt-20 w-full"}>
       <Slider {...settings}>
         {images.map((image, index) => (
           <div className="bg-fixed w-full relative overflow-hidden" key={index}>
@@ -46,8 +46,7 @@ const HeroCarousol = () => {
             {/* Parallax effect applied here */}
             <img
               src={image}
-              className="w-full h-[75vh] object-cover transition-transform duration-500 ease-out"
-              style={{ transform: `translateY(${scrollY * 0.3}px)` }}  
+              className="w-full h-[50vh] object-cover transition-transform duration-500 ease-out"
               alt={`Slide ${index + 1}`}
             />
           </div>

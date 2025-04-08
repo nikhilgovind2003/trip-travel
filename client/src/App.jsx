@@ -3,7 +3,8 @@ import "./App.css";
 import React from 'react'
 
 const LazyHomePage = React.lazy(() => import("./pages/HomePage"))
-const LazyVisit = React.lazy(() => import("./pages/VisitPage"))
+const LazyVisitPage = React.lazy(() => import("./pages/VisitPage"))
+
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import BookingPage from "./pages/BookingPage";
@@ -12,23 +13,17 @@ import PrivateRoute from "./utils/PrivateRoute";
 import AdminPage from "./pages/admin/AdminPage";
 import { Suspense } from "react";
 
-
-
-function App() {
-
-
-
-
+const App = () => {
+  const isAuthenticated = localStorage.getItem("isAuthenticated");
   return (
     <>
       <Routes>
-
         <Route path="/sign-in" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route
           path="/"
           element={
-            <PrivateRoute allowedRoles={["user", "admin"]}>
+            <PrivateRoute isAuthenticated={isAuthenticated} allowedRoles={["user", "admin"]}>
               <Suspense fallback={<h1>Loading...</h1>}
               >
                 <LazyHomePage />
@@ -61,7 +56,7 @@ function App() {
             <PrivateRoute allowedRoles={["user", "admin"]}>
               <Suspense fallback={<h1>Loading...</h1>}
               >
-                <LazyVisit />
+                <LazyVisitPage />
               </Suspense>
             </PrivateRoute>
           }

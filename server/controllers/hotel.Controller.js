@@ -6,7 +6,6 @@ import * as cheerio from "cheerio";
 export const addHotels = async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     if (!data) return res.status(404).json({ message: "Data not found" });
     const hotel = new hotelModel(data);
     await hotel.save();

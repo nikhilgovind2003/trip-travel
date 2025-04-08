@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import bgImg from "../assets/SignUpBg.png";
 import { Link } from "react-router-dom";
 import { Eye, EyeClosed } from "lucide-react";
+import GoogleAuth from "../components/GoogleAuth";
 
 const LoginPage = () => {
   // usestate
@@ -52,16 +53,13 @@ const LoginPage = () => {
 
         if (res.data.success) {
           toast.success("Login Successfully!!!");
-
           console.log(res.data)
-          localStorage.setItem("token", res.data.token);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("role", res.data.role);
           localStorage.setItem("userId", res.data.userId);
-
-          const role = res.data.role;
-          localStorage.setItem("isLoggedIn", true);
+          localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("expiresIn", Date.now() + 72000);
+          const role = res.data.role;
           setTimeout(() => {
             if (role === "admin") {
               navigate("/admin");
@@ -159,6 +157,8 @@ const LoginPage = () => {
           <div></div>
         </form>
 
+        
+        <GoogleAuth />
         <div className="mt-4 text-center ">
           Don't have an account?
           <Link className=" text-primary underline " to="/sign-up">

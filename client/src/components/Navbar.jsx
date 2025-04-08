@@ -9,10 +9,17 @@ const Navbar = () => {
   const userToken = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const isAuthenticated = localStorage.getItem("isAuthenticated");
+  console.log(isAuthenticated)
   useEffect(() => {
     setFadeIn(true);
-  }, []);
+
+    // Move navigation logic here
+    if (!isAuthenticated) {
+      navigate("/sign-in");
+    }
+  }, [isAuthenticated, navigate]);
+
 
   const logout = () => {
     toast.success("Logged out Successfully");
@@ -21,23 +28,21 @@ const Navbar = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("expiresIn");
     localStorage.removeItem("role");
+    localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userRole");
-
-
     setTimeout(() => {
       navigate("/sign-in");
     }, 1000);
   };
 
-  if (!token) {
-    navigate("/sign-in");
-  }
 
+  
   return (
     <>
       <div
-        className={`fixed top-0 w-full z-50 flex items-center justify-between px-6 lg:px-16 py-4 transition-all duration-500 backdrop-blur-lg ${fadeIn ? "bg-white/30 shadow-lg" : "bg-transparent"
-          }`}
+        className={`fixed top-0 w-full z-50 flex items-center justify-between px-6 lg:px-16 py-4 transition-all duration-500 backdrop-blur-lg ${
+          fadeIn ? "bg-white/30 shadow-lg" : "bg-transparent"
+        }`}
       >
         <Link to="/" className="text-3xl font-bold text-black">
           <span className="text-indigo-600">Trip </span>Travel
@@ -50,8 +55,9 @@ const Navbar = () => {
 
         {/* Menu Items */}
         <ul
-          className={`lg:flex lg:gap-10 absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-md lg:shadow-none text-lg text-gray-800 font-medium transition-all duration-300 ${isOpen ? "flex flex-col p-4" : "hidden lg:flex"
-            }`}
+          className={`lg:flex lg:gap-10 absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent shadow-md lg:shadow-none text-lg text-gray-800 font-medium transition-all duration-300 ${
+            isOpen ? "flex flex-col p-4" : "hidden lg:flex"
+          }`}
         >
           <li className="group relative">
             <Link to="/" className="px-4 py-2 block">
@@ -84,7 +90,7 @@ const Navbar = () => {
           </li>
 
           <li className="mt-4 lg:mt-0">
-            {userToken ? (
+            {userToken || isAuthenticated? (
               <button
                 onClick={logout}
                 className="px-6 py-2 rounded-full border-2 border-indigo-600 text-indigo-600 font-semibold hover:bg-indigo-600 hover:text-white transition"
@@ -104,9 +110,6 @@ const Navbar = () => {
       </div>
 
       <ToastContainer position="top-center" />
-
-
-      
     </>
   );
 };

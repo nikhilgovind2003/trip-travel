@@ -17,8 +17,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 // Component to update the map view dynamically
 const MapUpdater = ({ latitude, longitude }) => {
-  const map = useMap();
 
+  const map = useMap();
   useEffect(() => {
     if (latitude && longitude) {
       map.setView([latitude, longitude], 15); // Set zoom to 15 for a closer view
@@ -28,7 +28,7 @@ const MapUpdater = ({ latitude, longitude }) => {
   return null;
 };
 
-const MapComponent = ({ latitude = 51.505, longitude = -0.09 }) => {
+const MapComponent = ({ latitude, longitude}) => {
   return (
     <MapContainer 
       className="z-10" 
@@ -44,7 +44,7 @@ const MapComponent = ({ latitude = 51.505, longitude = -0.09 }) => {
         <Popup>Your Location</Popup>
       </Marker>
       <Marker position={[9.9406,76.2653]}>
-        <Popup>Your Location</Popup>
+        <Popup>Your Place</Popup>
       </Marker>
       
       {/* Update map view dynamically when latitude or longitude changes */}

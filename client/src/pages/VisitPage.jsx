@@ -45,19 +45,15 @@ const VisitPage = () => {
     fetchDestination();
   }, [id]);
 
+
+  console.log(location?.placeName)
   return (
     <>
       <Navbar />
+
       <div className=" lg:px-24 pt-12 px-4 md:px-6 bg-blue-50 lg:pt-24">
-        <div className=" w-full lg:w-[700px] my-12">
-          <h1 className=" lg:text-4xl text-xl font-semibold">
-            {location.placeName}
-          </h1>
-          <p className=" text-gray-500 mt-4 text-sm lg:text-lg">
-            {location.description}
-          </p>
-        </div>
-        <PlaceCarousel img={location.images} />
+      <PlaceCarousel img={location.images} />
+   
 
 
         <Weather placeName={location.placeName} />
@@ -68,7 +64,7 @@ const VisitPage = () => {
           <p>Data not found</p>
         )}
 
-        <MapComponent longitude={longitude} latitude={latitude} />
+        <MapComponent  longitude={longitude} latitude={latitude} />
         <Review placeId={id} />
 
         <Footer />

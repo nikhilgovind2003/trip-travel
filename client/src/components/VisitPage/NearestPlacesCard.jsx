@@ -13,12 +13,11 @@ const NearestPlacesCard = ({ data, latitude, longitude }) => {
     ? `url(http://localhost:4000/${data.images})`
     : `url(${img})`;
 
+  
+  
+  console.log(data)
   const handleClick = () => {
-    if (!data?.lon || !data?.lat) {
-      console.error("Longitude or Latitude is missing.");
-      return;
-    }
-    navigate(`/visit/${data?.lon}/${data?.lat}`);
+    // navigate(`/visit/${data?.}`);
   };
 
   const haversineDistance = (lat1, lon1, lat2, lon2) => {

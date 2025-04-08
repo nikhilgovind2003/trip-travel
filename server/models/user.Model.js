@@ -12,11 +12,9 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
-      required: true,
     },
     googleId: {
       type: String,
@@ -24,14 +22,20 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: ["user", "admin"],
+      default: "user",
     },
     isActive: {
       type: Boolean,
-      default:false
-    }
-      
+      default: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    googleSignup: {
+      type: Boolean,
+  },
   },
   {
     timeseries: true,
